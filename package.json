@@ -53,7 +53,8 @@
     "docs:render": "redoc-cli bundle docs/api/openapi.json -o docs/api/index.html",
     "security:audit": "npm audit --audit-level=moderate",
     "security:audit:report": "npm audit --json > security/audit-report.json || true",
-    "doctor": "bash scripts/doctor.sh"
+    "doctor": "bash scripts/doctor.sh",
+    "bootstrap": "bash scripts/bootstrap.sh"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.450.0",
