@@ -12,6 +12,7 @@ import { Wallet } from '../wallet/entities/wallet.entity';
 import { OrdersModule } from '../orders/orders.module';
 import { WalletModule } from '../wallet/wallet.module';
 import { WebhooksModule } from '../webhooks/webhooks.module';
+import { RewardsModule } from '../rewards/rewards.module';
 import { LoggerModule } from '../common/logger/logger.module';
 
 @Module({
@@ -22,6 +23,7 @@ import { LoggerModule } from '../common/logger/logger.module';
     OrdersModule,
     WalletModule,
     WebhooksModule,
+    RewardsModule,
     LoggerModule,
   ],
   controllers: [PaymentsController],

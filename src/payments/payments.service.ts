@@ -28,6 +28,7 @@ import {
   PaymentTimeoutEvent,
   EventNames,
 } from '../common/events';
+import { RewardsService } from '../rewards/rewards.service';
 import { LoggerService } from '../common/logger/logger.service';
 
 @Injectable()
@@ -45,8 +46,8 @@ export class PaymentsService {
     private walletsRepository: Repository<Wallet>,
     private configService: ConfigService,
     private eventEmitter: EventEmitter2,
+    private readonly rewardsService: RewardsService,
     logger: LoggerService,
-    private readonly logger: LoggerService,
   ) {
     this.logger = logger;
     // Initialize Stellar SDK
@@ -110,6 +111,32 @@ export class PaymentsService {
       return this.mapToResponseDto(existingPayment);
     }
 
+    // Apply reward points if provided
+    let finalAmount = parseFloat(order.totalAmount.toString());
+    let pointsUsed = 0;
+    let pointsDiscount = 0;
+
+    if (initiatePaymentDto.pointsToUse && initiatePaymentDto.pointsToUse > 0) {
+      try {
+        const pointsResult = await this.rewardsService.applyPointsToCheckout(
+          order.buyerId,
+          initiatePaymentDto.pointsToUse,
+          finalAmount,
+        );
+        pointsUsed = pointsResult.pointsUsed;
+        pointsDiscount = pointsResult.discountAmount;
+        finalAmount = finalAmount - pointsDiscount;
+        this.logger.log(
+          `Applied ${pointsUsed} reward points for order ${initiatePaymentDto.orderId}, discount: $${pointsDiscount}`,
+        );
+      } catch (error) {
+        this.logger.warn(
+          `Failed to apply reward points: ${error.message}. Proceeding without points.`,
+        );
+        // Continue without points if redemption fails
+      }
+    }
+
     // Get buyer's wallet to get payment address
     const wallet = await this.walletsRepository.findOne({
       where: { userId: order.buyerId },
@@ -126,7 +153,7 @@ export class PaymentsService {
 
     const payment = this.paymentsRepository.create({
       orderId: initiatePaymentDto.orderId,
-      amount: parseFloat(order.totalAmount.toString()),
+      amount: finalAmount,
       currency: initiatePaymentDto.currency,
       status: PaymentStatus.PENDING,
       destinationWalletAddress: wallet.publicKey,
@@ -138,7 +165,7 @@ export class PaymentsService {
     const savedPayment = await this.paymentsRepository.save(payment);
 
     this.logger.info(
-      `Payment initiated for order ${initiatePaymentDto.orderId}: ${savedPayment.id}`,
+      `Payment initiated for order ${initiatePaymentDto.orderId}: ${savedPayment.id}. Original: $${order.totalAmount}, After points: $${finalAmount}`,
     );
 
     // Emit event for payment monitoring
