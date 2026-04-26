@@ -1,7 +1,7 @@
 # Makefile - MarketX Backend Engine
 # Helper targets for local development and CI
 
-.PHONY: help install start test lint typecheck coverage pr-check local-infra local-infra-down
+.PHONY: help install start test lint typecheck coverage pr-check doctor local-infra local-infra-down
 
 help:
 	@echo "Available commands:"
@@ -12,6 +12,7 @@ help:
 	@echo "  typecheck        Run TypeScript typechecks"
 	@echo "  coverage         Run tests with coverage"
 	@echo "  pr-check         Run the pre-PR confidence suite"
+	@echo "  doctor           Run environment diagnostics"
 	@echo "  local-infra      Start local infrastructure (Docker)"
 	@echo "  local-infra-down Stop local infrastructure"
 
@@ -35,6 +36,9 @@ coverage:
 
 pr-check:
 	npm run pr:check
+
+doctor:
+	npm run doctor
 
 local-infra:
 	docker compose --profile local-dev up -d

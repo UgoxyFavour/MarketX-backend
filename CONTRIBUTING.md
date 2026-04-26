@@ -15,7 +15,19 @@ Ensure you have the following installed:
 - **npm** (v9+)
 - **Docker** & **Docker Compose**
 
-### 2. Fork and Clone
+### 2. Diagnostics
+
+Before you start debugging setup issues, run our diagnostics tool to ensure your environment is correctly configured:
+```bash
+npm run doctor
+```
+Or if you prefer using `make`:
+```bash
+make doctor
+```
+This tool checks for required versions, `.env` configuration, and connectivity to services (Postgres, Redis, RabbitMQ).
+
+### 3. Fork and Clone
 
 1. Fork the repository on GitHub.
 2. Clone your fork locally:
@@ -28,7 +40,7 @@ Ensure you have the following installed:
    git remote add upstream https://github.com/Cybermaxi7/MarketX-backend.git
    ```
 
-### 3. Environment Setup
+### 4. Environment Setup
 
 1. Install dependencies:
    ```bash
@@ -40,7 +52,7 @@ Ensure you have the following installed:
    ```
    Edit `.env` and fill in the necessary credentials.
 
-### 4. Local Infrastructure
+### 5. Local Infrastructure
 
 We use Docker Compose to spin up the required services (PostgreSQL, Redis, RabbitMQ).
 ```bash
@@ -79,14 +91,7 @@ Please ensure your code passes linting and typechecking before submitting a PR.
 
 ### Commit Messages
 
-We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
-- `feat: ...` for new features.
-- `fix: ...` for bug fixes.
-- `docs: ...` for documentation changes.
-- `style: ...` for formatting, missing semi colons, etc.
-- `refactor: ...` for code changes that neither fix a bug nor add a feature.
-- `test: ...` for adding missing tests or correcting existing tests.
-- `chore: ...` for updating build tasks, package manager configs, etc.
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification.
 
 ---
 
@@ -96,39 +101,23 @@ We value high test coverage. Ensure you add tests for any new features or bug fi
 
 - **Run all tests**: `npm run test`
 - **Run pre-PR confidence suite**: `npm run pr:check`
-- **Watch mode**: `npm run test:watch`
 - **Check coverage**: `npm run test:cov`
-
-For specific testing guides, see:
-- [docs/PACT_CONTRACT_TESTING.md](docs/PACT_CONTRACT_TESTING.md)
-- [docs/AUDIT_TESTING_GUIDE.md](docs/AUDIT_TESTING_GUIDE.md)
 
 ---
 
 ## 📖 Documentation
 
-- **API Docs**: If you change API endpoints, update the Swagger metadata in your controllers and run:
-  ```bash
-  npm run docs:generate
-  ```
-- **ADRs**: For significant architectural changes, please add or update an Architectural Decision Record in `docs/adr/`. See [docs/adr/README.md](docs/adr/README.md).
+- **API Docs**: Update Swagger metadata and run `npm run docs:generate`.
+- **ADRs**: Add or update an ADR in `docs/adr/` for significant architectural changes.
 
 ---
 
 ## 📤 Submission Process
 
-1. **Rebase**: Ensure your branch is up to date with `upstream/develop` (or `main` as specified in the issue).
-2. **Confidence Check**: Run `npm run pr:check`.
+1. **Rebase**: Ensure your branch is up to date with `upstream/develop`.
+2. **Confidence Check**: Run `npm run pr:check` and `npm run doctor`.
 3. **Push**: Push your branch to your fork.
 4. **Open PR**: Open a Pull Request against the `develop` branch of the upstream repository.
-5. **PR Checklist**: Follow the [PR Quality Checklist](docs/pr-checklist.md) and use our PR template.
-
----
-
-## 💬 Communication
-
-- **Issues**: Use the provided [issue templates](.github/ISSUE_TEMPLATE/) to report bugs or request features.
-- **Discussions**: For general questions, use GitHub Discussions.
 
 ---
 

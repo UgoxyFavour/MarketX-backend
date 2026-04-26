@@ -175,6 +175,12 @@ Interested in collaborating? We'd love your help!
 
 Please read our **[Contributing Guide](CONTRIBUTING.md)** for detailed instructions on how to set up your environment, follow our coding standards, and submit your changes.
 
+**Quick Setup Check:**
+If you encounter any issues during setup, run our environment diagnostics tool:
+```bash
+npm run doctor
+```
+
 To get started, browse our active [GitHub Issues](https://github.com/Cybermaxi7/MarketX-backend/issues). When you find an issue you'd like to tackle, please **read the issue description thoroughly** before beginning your work.
 
 ---
