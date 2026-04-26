@@ -80,7 +80,6 @@ describe('[REGRESSION] Issue 1 — TypeORM date query syntax in getStats()', () 
     for (const call of countSpy.mock.calls) {
       const whereValue = call[0]?.where?.createdAt;
       expect(whereValue).toBeInstanceOf(Date);
-      expect(typeof whereValue).not.toBe('object'); // catches Date, but not plain {}
       expect(whereValue).not.toMatchObject(
         expect.objectContaining({ $gte: expect.anything() }),
       );

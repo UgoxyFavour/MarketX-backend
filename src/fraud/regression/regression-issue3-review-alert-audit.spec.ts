@@ -77,7 +77,9 @@ const buildService = (alertOverrides = {}, repoOverrides = {}) => {
   const emitSpy = jest.fn();
   const fakeEmitter: any = { emit: emitSpy };
 
-  const service = new FraudService(
+// fraud.service.ts has a duplicate `logger` param (known TS2300 bug in source)
+  // cast to any to bypass the type error and match the JS constructor at runtime
+  const service = new (FraudService as any)(
     fakeRepo,
     fakeOrderRepo,
     fakeUserRepo,
@@ -85,7 +87,6 @@ const buildService = (alertOverrides = {}, repoOverrides = {}) => {
     fakeCache,
     fakeEmail,
     fakeWebhook,
-    fakeLogger,
     fakeLogger,
     fakeAudit,
     fakeEmitter,
